@@ -32,17 +32,19 @@ class Sudoku {
 };
 
 /* Sudoku an out senden */
-ostream& operator<< (ostream& out, const Sudoku& S);
+std::ostream& operator<< (std::ostream& out, const Sudoku& S);
 
 int main () {
 	
 	return 0;
 }
 
+/* Default-Konstruktor */
 Sudoku::Sudoku () {
 	Data.resize(SUDOKU_SIZE);
 }
 
+/* Lese-/Schreiboperator */
 int& Sudoku::operator() (int r, int c) {
 	
 	/* Existiert der angeforderte Index? */
@@ -58,6 +60,7 @@ int& Sudoku::operator() (int r, int c) {
 	return Data[index]; 
 }
 
+/* Leseoperator */
 int Sudoku::operator() (int r, int c) const {
 	
 	/* Existiert der angeforderte Index? */
@@ -73,7 +76,14 @@ int Sudoku::operator() (int r, int c) const {
 	return Data[index]; 
 }
 
-ostream& operator<< (ostream& out, const Sudoku& S) {
-	/* TO DO */
+/* Gibt ein Sudoku an out aus und gibt out zurück */
+std::ostream& operator<< (std::ostream& out, const Sudoku& S) {
+	for (int i=1; i <= SUDOKU_ROW_LENGTH; ++i) {
+		for (int j=1; j <= SUDOKU_ROW_LENGTH; ++j) {
+			out << S(i,j);
+			if ( j != SUDOKU_ROW_LENGTH ) out << " ";
+		}
+		out << std::endl;
+	}
 	return out;
 }
