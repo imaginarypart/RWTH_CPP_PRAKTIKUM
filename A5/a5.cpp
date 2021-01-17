@@ -1,3 +1,8 @@
+/* 
+ * RWTH-C++-Praktikum
+ * Abgabe 5
+ */
+
 #include <iostream>
 #include <vector>
 #include <ostream>
@@ -33,6 +38,9 @@ class Sudoku {
 
 /* Sudoku an out senden */
 std::ostream& operator<< (std::ostream& out, const Sudoku& S);
+
+/* Sudoku von in einlesen */
+std::istream& operator>> (std::istream& in, Sudoku& S);
 
 int main () {
 	
@@ -87,3 +95,14 @@ std::ostream& operator<< (std::ostream& out, const Sudoku& S) {
 	}
 	return out;
 }
+
+/* Sudoku von in einlesen */
+std::istream& operator>> (std::istream& in, Sudoku& S) {
+	for ( int i=1; i <= SUDOKU_ROW_LENGTH; ++i ) {
+		for ( int j=1; j <= SUDOKU_ROW_LENGTH; ++j ) {
+			in >> S(i,j);
+		}
+	}
+	return in;
+}
+
