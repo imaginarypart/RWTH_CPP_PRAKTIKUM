@@ -5,8 +5,7 @@
 
 
 // Ein-/Ausgabeoperatoren
-ostream& operator<< (ostream& out, const Sudoku& S)
-{
+ostream& operator<< (ostream& out, const Sudoku& S) {
     for (int r=1; r<=9; ++r) {
         for (int c=1; c<=9; ++c) {
             const int z= S(r,c);
@@ -20,8 +19,7 @@ ostream& operator<< (ostream& out, const Sudoku& S)
     return out;
 }
 
-istream& operator>> (istream& in, Sudoku& S)
-{
+istream& operator>> (istream& in, Sudoku& S) {
     for (int r=1; r<=9; ++r)
         for (int c=1; c<=9; ++c)
             in >> S(r,c);
@@ -30,8 +28,7 @@ istream& operator>> (istream& in, Sudoku& S)
 
 // Sudoku-Methoden
 
-void Sudoku::check( int& idx) const
-{
+void Sudoku::check( int& idx) const {
     if (idx < 1) {
         cout << "Index " << idx << " ist ungueltig." << endl;
         idx= 1;
@@ -42,8 +39,7 @@ void Sudoku::check( int& idx) const
     }
 }
 
-int Sudoku::getNumEmpty() const
-{
+int Sudoku::getNumEmpty() const {
     int num_empty= 0;
     for (int i=0; i<81; ++i)
         if (Data[i]==0)
@@ -51,8 +47,7 @@ int Sudoku::getNumEmpty() const
     return num_empty;
 }
 
-bool Sudoku::validRow( int r) const
-{
+bool Sudoku::validRow( int r) const {
     int haeufigkeit[10]= {}; // mit Nullen initialisiert
 
     for (int c=1; c<=9; ++c) {
@@ -66,8 +61,7 @@ bool Sudoku::validRow( int r) const
     return true;
 }
 
-bool Sudoku::validCol( int c) const
-{
+bool Sudoku::validCol( int c) const {
     int haeufigkeit[10]= {}; // mit Nullen initialisiert
 
     for (int r=1; r<=9; ++r) {
@@ -81,8 +75,7 @@ bool Sudoku::validCol( int c) const
     return true;
 }
 
-bool Sudoku::validSqr( int a, int b) const
-{
+bool Sudoku::validSqr( int a, int b) const {
     int haeufigkeit[10]= {}; // mit Nullen initialisiert
     // Eintrag oben links ist (r,c)
     const int r= 3*(a-1)+1, c= 3*(b-1)+1;
@@ -100,8 +93,7 @@ bool Sudoku::validSqr( int a, int b) const
     return true;
 }
 
-bool Sudoku::valid() const
-{
+bool Sudoku::valid() const {
     bool val= true;
 
     for (int i=1; i<=9; ++i) {
@@ -118,15 +110,59 @@ bool Sudoku::valid() const
 
 // ----------------------------------------------------------------------
 // Klasse PossibleDigits fuer die Hilfszahlen
-PossibleDigits::PossibleDigits(bool all_possible) {
+PossibleDigits::PossibleDigits(bool all_possible = false) {
 	possible.resize(9);
-	if (all_possible) 
-		for (int i = 0; i<possible.size(); ++i) possible[i] = true;
-	else 
-		 for (int i = 0; i<possible.size(); ++i) possible[i] = false;
+	if (all_possible)
+		for (int i = 0; i<possible.size(); ++i) possible[i] = all_possible;
+}
+
+int PossibleDigits::numPossible() const {
+    int num = 0;
+    for ( bool digit : possible ) if (digit) num++;
+    return num;
+}
+
+bool PossibleDigits::isPossible(int digit) const {
+    return possible[digit-1];
+}
+
+void PossibleDigits::enable (int digit) {
+    possible[digit-1] = true;
+}
+
+void PossibleDigits::disable (int digit) {
+    possible[digit-1] = false;
+}
+
+ostream& operator<<( ostream& out, const PossibleDigits& a) {
+    for ( int i=1; i<=9; ++i) {
+        if (a.isPossible(i)) out << i << "\n";
+    }
+    return out;
+}
+
+PossibleDigits operator&&( const PossibleDigits& a, const PossibleDigits& b ) {
+
+    PossibleDigits cap(false);
+
+    for ( int i=1; i<=9; ++i )
+        if( a.isPossible(i) && b.isPossible(i) ) cap.enable(i);
+
+    return cap;
 }
 
 
 // ----------------------------------------------------------------------
 // Klasse SudokuSolver
+/*
+SudokuSolver::SudokuSolver ( Sudoku& S) {
+    pd_row.resize(9);
+    pd_col.resize(9);
+    pd_sqr.resize(9);
+    sudo = S;
 
+
+    for ( int i=1; i <= 9; ++i )     }
+}
+
+*/

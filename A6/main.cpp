@@ -44,10 +44,10 @@ int main () {
 	}
 
 	if (S.valid()) {
-		std::cout << "Herzlichen Glückwunsch! Sie sind ein wunderbarer Mensch!";
+		std::cout << "Herzlichen Glueckwunsch! Sie sind ein wunderbarer Mensch!\n";
 	} else {
-		std::cout << "Schade! Das Sudoku ist leider nicht gültig. Machen Sie sich nichtfertig und versuchen Sie es einfach erneut.
-		Tipp: Versuchen Sie das Sudoku erst auf Papier zu lösen, und übertragen Sie es erst dann.";
+		std::cout << "Schade! Das Sudoku ist leider nicht gueltig. Machen Sie sich nichtfertig und versuchen Sie es einfach erneut.\n"
+		<< "Tipp: Versuchen Sie das Sudoku erst auf Papier zu loesen, und uebertragen Sie es erst dann.\n";
 	}
 	return 0;
 }
