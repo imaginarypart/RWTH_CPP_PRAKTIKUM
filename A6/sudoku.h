@@ -121,4 +121,3 @@ class SudokuSolver
 
     bool solve( int num_empty);
 };
-

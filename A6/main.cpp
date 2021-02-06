@@ -14,7 +14,7 @@ int main () {
 	Sudoku S;
 	ifs >> S;
 	ifs.close();
-
+	/*
 	while (		S.valid()
 		and	S.getNumEmpty() != 0 ) {
 
@@ -50,4 +50,10 @@ int main () {
 		<< "Tipp: Versuchen Sie das Sudoku erst auf Papier zu loesen, und uebertragen Sie es erst dann.\n";
 	}
 	return 0;
+	*/
+	SudokuSolver SuSo(S);
+	std::cout << S;
+	std::cout << S.getNumEmpty();
+	std::cout << SuSo.solve(S.getNumEmpty());
+	std::cout << S;
 }

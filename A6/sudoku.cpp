@@ -110,15 +110,18 @@ bool Sudoku::valid() const {
 
 // ----------------------------------------------------------------------
 // Klasse PossibleDigits fuer die Hilfszahlen
-PossibleDigits::PossibleDigits(bool all_possible = false) {
-	possible.resize(9);
+PossibleDigits::PossibleDigits(bool all_possible)
+    :   possible(9,false)   {
 	if (all_possible)
-		for (int i = 0; i<possible.size(); ++i) possible[i] = all_possible;
+		for (int i=0; i<9; ++i) possible[i] = all_possible;
 }
 
 int PossibleDigits::numPossible() const {
     int num = 0;
-    for ( bool digit : possible ) if (digit) num++;
+    for ( int i = 0; i < 9; ++i ) {
+        if (possible[i]) num++;
+
+    }
     return num;
 }
 
@@ -154,15 +157,60 @@ PossibleDigits operator&&( const PossibleDigits& a, const PossibleDigits& b ) {
 
 // ----------------------------------------------------------------------
 // Klasse SudokuSolver
-/*
-SudokuSolver::SudokuSolver ( Sudoku& S) {
-    pd_row.resize(9);
-    pd_col.resize(9);
-    pd_sqr.resize(9);
-    sudo = S;
+SudokuSolver::SudokuSolver ( Sudoku& S)
+    :   pd_row(9),
+        pd_col(9),
+        pd_sqr(9),
+        sudo{S}
+    {}
 
-
-    for ( int i=1; i <= 9; ++i )     }
+void SudokuSolver::setDigit (int r, int c, int digit) {
+    sudo(r,c) = digit;
+    pd_row[r].disable(digit);
+    pd_col[c].disable(digit);
+    pd_sqr[getSqr(r,c)].disable(digit);
 }
 
-*/
+void SudokuSolver::unsetDigit (int r, int c) {
+    int digit = sudo(r,c);
+    pd_row[r].enable(digit);
+    pd_col[c].enable(digit);
+    pd_sqr[getSqr(r,c)].enable(digit);
+    sudo(r,c) = 0;
+}
+
+PossibleDigits SudokuSolver::getPossible(int r, int c) const {
+    PossibleDigits DigList(false);
+    if (sudo(r,c) == 0)
+        DigList = pd_row[r-1] && pd_col[c-1] && pd_sqr[getSqr(r,c)-1];
+    return DigList;
+}
+
+void SudokuSolver::getNextCell (int& r_min, int& c_min) const {
+    r_min= 1;
+    c_min=1;
+    for (int r = 1; r<=9; ++r ) {
+        for (int c = 1; c <= 9; ++c ) {
+            int rcval = getPossible(r,c).numPossible();
+            if ( rcval > 0 && rcval < getPossible(r_min,c_min).numPossible()) {
+                r_min = r;
+                c_min = c;
+            }
+        }
+    }
+}
+
+bool SudokuSolver::solve(int num_empty)  {
+    //Abbruchbedingung
+    if (num_empty == 0) return sudo.valid();
+    //Wähle Feld mit min an freien Hilfszahlen
+    int r=1;
+    int c=1;
+    getNextCell(r,c);
+    for (int i = 1; i<=9; ++i) {
+        setDigit(r,c,i);
+        if (solve(num_empty - 1)) return true;
+        unsetDigit(r,c);
+    }
+    return false;
+}
