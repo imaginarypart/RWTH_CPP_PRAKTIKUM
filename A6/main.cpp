@@ -10,7 +10,7 @@
 /* Definitionen */
 int main () {
 
-	std::ifstream ifs("Sudoku1.txt");
+	std::ifstream ifs("Sudoku2.txt");
 	Sudoku S;
 	ifs >> S;
 	ifs.close();
@@ -52,8 +52,6 @@ int main () {
 	return 0;
 	*/
 	SudokuSolver SuSo(S);
-	std::cout << S;
-	std::cout << S.getNumEmpty();
-	std::cout << SuSo.solve(S.getNumEmpty());
+	std::cout << SuSo.solve(S.getNumEmpty()) << "\n";
 	std::cout << S;
 }
