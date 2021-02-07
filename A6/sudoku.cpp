@@ -166,7 +166,6 @@ SudokuSolver::SudokuSolver ( Sudoku& S)
         //Zeilen initialisieren
         for (int r=1; r<=9; ++r) {
             for (int c=1; c<=9; ++c) {
-                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
                 std::cout << sudo(r,c) << '\n';
                 if (sudo(r,c) != 0)
                     pd_row[r-1].disable(sudo(r,c));
@@ -176,7 +175,6 @@ SudokuSolver::SudokuSolver ( Sudoku& S)
         //Spalten initialisieren
         for (int c=1; c<=9; ++c) {
             for (int r=1; r<=9; ++r) {
-                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
                 if (sudo(r,c) != 0)
                     pd_col[c-1].disable(sudo(r,c));
             }
@@ -185,7 +183,6 @@ SudokuSolver::SudokuSolver ( Sudoku& S)
         //Quadrate initialisieren
         for (int r=1; r<=9; ++r) {
             for (int c=1; c<=9; ++c) {
-                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
                 if (sudo(r,c) != 0)
                     pd_sqr[getSqr(r,c)-1].disable(sudo(r,c));
             }
@@ -234,7 +231,6 @@ void SudokuSolver::getNextCell (int& r_min, int& c_min) const {
 
 bool SudokuSolver::solve(int num_empty)  {
     //Abbruchbedingung
-    std::cout << "num_empty = " << num_empty << '\n';
     if (num_empty == 0) return sudo.valid();
     //Wähle Feld mit min an freien Hilfszahlen
     int r=1;
