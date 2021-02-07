@@ -162,7 +162,35 @@ SudokuSolver::SudokuSolver ( Sudoku& S)
         pd_col(9),
         pd_sqr(9),
         sudo{S}
-    {}
+    {
+        //Zeilen initialisieren
+        for (int r=1; r<=9; ++r) {
+            for (int c=1; c<=9; ++c) {
+                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
+                std::cout << sudo(r,c) << '\n';
+                if (sudo(r,c) != 0)
+                    pd_row[r-1].disable(sudo(r,c));
+            }
+        }
+
+        //Spalten initialisieren
+        for (int c=1; c<=9; ++c) {
+            for (int r=1; r<=9; ++r) {
+                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
+                if (sudo(r,c) != 0)
+                    pd_col[c-1].disable(sudo(r,c));
+            }
+        }
+
+        //Quadrate initialisieren
+        for (int r=1; r<=9; ++r) {
+            for (int c=1; c<=9; ++c) {
+                std::cout << "(r,c) = " <<"(" << r << ", " << c<< ")" << '\n';
+                if (sudo(r,c) != 0)
+                    pd_sqr[getSqr(r,c)-1].disable(sudo(r,c));
+            }
+        }
+    }
 
 void SudokuSolver::setDigit (int r, int c, int digit) {
     sudo(r,c) = digit;
@@ -215,7 +243,7 @@ bool SudokuSolver::solve(int num_empty)  {
     //std::cout << "(r,c) = (" << r << ", " << c << ")" << '\n';
 
     PossibleDigits tocheck = getPossible(r,c);
-    std::cout << tocheck << '\n';
+    //&std::cout << tocheck << '\n';
     //std::cout << "tocheck passed!" << '\n';
     for (int i = 1; i<=9; ++i) {
         if (tocheck.isPossible(i)) {
